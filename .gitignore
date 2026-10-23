@@ -1,0 +1,40 @@
+# last updated 2026-03-01
+# Python-generated files
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+__pycache__/
+
+# Nuitka build artifacts
+*.build/
+*.dist/
+*.onefile-build/
+
+# virtual environments
+.venv**
+.env
+
+# directories
+logs/
+build/
+main.build/
+main.dist/
+main.onefile-build/
+.pytest_cache/
+data/
+exports/
+
+
+# files
+*.pdf
+*.db
+**/.DS_Store
+dev-docs/packaging/nuitka/installing_nuitka.md
+
+
+# Xcode (src/ios)
+xcuserdata/
+DerivedData/
+*.xcuserstate
