@@ -12,7 +12,7 @@ last_updated: 2026-10-23
 <h1 align="center">Fin Calc</h1>
 
 <p align="center">
-  Decimal arithmetic. Persistent history. Windows and iOS.
+  Decimal arithmetic. Persistent history. Windows, Android, and iOS.
 </p>
 
 <p align="center">
@@ -38,10 +38,11 @@ interfaces
 
 ## Long Description
 
-Fin Calc is a decimal calculator for Windows, iPhone, and iPad. Calculate
-expressions, review past results, and keep a persistent calculation history.
-The graphical apps include a keypad, calculation tape, display settings, and
-CSV export. Windows also offers terminal and command-line interfaces.
+Fin Calc is a decimal calculator for Windows, Android, iPhone, and iPad.
+Calculate expressions, review past results, and keep a persistent calculation
+history. The graphical apps include a keypad, calculation tape, display
+settings, and CSV export. Windows also offers terminal and command-line
+interfaces.
 
 Licensed under the [MIT License](LICENSE).
 
@@ -84,6 +85,16 @@ quits. The result and saved tape use the configured display precision, while
 stored results retain full precision. Settings editing and CSV export remain
 available in the GUI. History and settings are saved in the repository's
 `data/` folder. See the [user manual](docs/USER_MANUAL.md) for more details.
+
+### Android
+
+Open `src/android/` in Android Studio, allow Gradle to sync, and run the **app**
+configuration on an Android 8.0 or newer device or emulator. Install Android SDK
+Platform 37 when prompted. The Android app runs natively in Kotlin and does not
+require Python.
+
+See the [Android build guide](src/android/README.md) for command-line builds,
+tests, and release preparation.
 
 ### iPhone and iPad
 

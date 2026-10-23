@@ -9,13 +9,14 @@ generated_from: "dev-docs/specs/USER_MANUAL_SPEC.md"
 
 ## 1. Overview
 
-Fin Calc is a desktop calculator for decimal-precision arithmetic. It provides
-an expression display, keypad input, a persistent calculation tape, keyboard
-input, settings, and CSV history export.
+Fin Calc is a calculator for decimal-precision arithmetic. Its Windows app
+provides an expression display, keypad input, a persistent calculation tape,
+keyboard input, settings, and CSV history export.
 
 Supported interfaces are the PySide6 GUI, Textual TUI, and Typer CLI. They use
 the same Decimal evaluator, saved settings, and calculation history. This
-manual covers the development checkout workflow.
+manual covers the Windows development checkout workflow, with Android usage
+described in section 14.
 
 Verified from: `README.md`; `src/windows/ui/gui/views/root_window.py`
 
@@ -231,3 +232,30 @@ Verified from: `src/windows/ui/gui/menus/menu_bar.py`;
 Verified from: `src/windows/domains/calc/evaluator.py`;
 `src/windows/domains/calc/history.py`;
 `src/windows/config/settings.py`
+
+## 14. Android
+
+Open `src/android/` in Android Studio and run the app on an Android 8.0 or newer
+device or emulator. See the [Android build guide](../src/android/README.md) for
+SDK requirements, command-line builds, tests, and release signing.
+
+Tap keypad buttons to enter an expression and **=** to evaluate it. Tap a tape
+result to reuse its full precision. **C** clears input and **⌫** deletes the
+last character. The **⋮** menu provides Settings, Export history, Clear history,
+and About. Clearing history requires confirmation.
+
+Settings control full precision or 0–6 displayed decimal places, light/dark
+theme, and a history cap of 1–10,000 entries or Unlimited. These settings and
+history persist locally across restarts. Export history opens Android's file
+picker and saves UTF-8 CSV with full-precision results.
+
+Android stores data privately on the device, independently of the Windows
+`data/` folder. Uninstalling or clearing app data removes it. Export important
+history first; Android backup is disabled and there is no synchronization.
+
+Android uses 28-digit decimal arithmetic with bounded exponents. See the Android
+build guide for numeric limits and differences in transcendental calculations.
+
+Verified from: `src/android/app/src/main/AndroidManifest.xml`;
+`src/android/app/src/main/java/com/plaintxtoffice/fincalc/MainActivity.kt`;
+`src/android/README.md`

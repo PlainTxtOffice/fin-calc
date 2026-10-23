@@ -1,0 +1,4 @@
+# Preserve LF in Android source files and the Unix Gradle launcher.
+* text=auto eol=lf
+*.jar binary
+*.png binary

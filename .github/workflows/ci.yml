@@ -1,0 +1,100 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows:
+    name: Windows tests and checks
+    runs-on: windows-latest
+    timeout-minutes: 20
+    env:
+      QT_QPA_PLATFORM: offscreen
+      PYTHONUTF8: "1"
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          .venv/Scripts/python.exe -m pip install -e ".[dev]"
+      - name: Lint
+        run: .venv/Scripts/python.exe -m ruff check .
+      - name: Type check
+        run: .venv/Scripts/python.exe -m mypy src
+      - name: Test
+        run: .venv/Scripts/python.exe -m pytest
+
+  android:
+    name: Android tests and debug build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+        working-directory: src/android
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "25"
+      - name: Install Android SDK components
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
+            "platforms;android-37.0" "build-tools;36.0.0"
+      - name: Test, lint, and build
+        run: ./gradlew testDebugUnitTest lintDebug assembleDebug --no-daemon --console=plain
+
+  ios:
+    name: iOS simulator tests
+    runs-on: macos-15
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Select Xcode
+        run: sudo xcode-select --switch /Applications/Xcode_26.2.app/Contents/Developer
+      - name: Select an available iPhone simulator
+        run: |
+          simulator_id=$(xcrun simctl list devices available --json | python3 -c '
+          import json, sys
+          devices = json.load(sys.stdin)["devices"]
+          phones = [device["udid"] for runtime, rows in devices.items()
+                    if ".iOS-" in runtime for device in rows
+                    if device["name"].startswith("iPhone")]
+          if not phones:
+              sys.exit("No available iPhone simulator found")
+          print(phones[0])
+          ')
+          echo "SIMULATOR_ID=$simulator_id" >> "$GITHUB_ENV"
+      - name: Build and test
+        run: |
+          xcodebuild test \
+            -project src/ios/FinCalc.xcodeproj \
+            -scheme FinCalc \
+            -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
+            -parallel-testing-enabled NO \
+            CODE_SIGNING_ALLOWED=NO
