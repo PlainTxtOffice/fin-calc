@@ -1,6 +1,6 @@
 ---
-last_updated: 2026-10-22
-version: 0.2.0
+last_updated: 2026-10-23
+version: 0.2.1
 product_version: "0.1.0"
 generated_from: "dev-docs/specs/USER_MANUAL_SPEC.md"
 ---
@@ -219,13 +219,15 @@ Verified from: `src/windows/ui/gui/menus/menu_bar.py`;
 
 ## 13. Glossary
 
-- **Decimal arithmetic**: Arithmetic based on decimal values rather than binary
-  floating-point values.
+- **Decimal arithmetic (decimal precision)**: Arithmetic based on decimal
+  values rather than binary floating-point values.
 - **Expression**: The calculation currently being entered, such as `2 + 3`.
-- **Tape**: The scrollable list of previous calculations and results.
+- **Tape (tape history)**: The scrollable list of previous calculations and
+  results.
 - **History entry**: A stored expression, result, and UTC timestamp.
 - **Full precision**: Displaying the calculated result without a configured
   decimal-place limit.
 
-Verified from: `README.md`; `src/windows/domains/calc/history.py`;
+Verified from: `src/windows/domains/calc/evaluator.py`;
+`src/windows/domains/calc/history.py`;
 `src/windows/config/settings.py`

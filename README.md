@@ -1,8 +1,27 @@
 ---
-last_updated: 2026-10-22
+last_updated: 2026-10-23
 ---
 
-# Fin Calc
+<!-- rumdl-disable MD041 -->
+<!-- rumdl-disable MD033 -->
+
+<p align="center">
+  <img src="assets/icon.svg" alt="Fin Calc logo" width="160">
+</p>
+
+<h1 align="center">Fin Calc</h1>
+
+<p align="center">
+  Decimal arithmetic. Persistent history. Windows and iOS.
+</p>
+
+<p align="center">
+  <a href="LICENSE">MIT License</a> ·
+  <a href="docs/USER_MANUAL.md">User Manual</a> ·
+  <a href="#usage-examples">Getting Started</a>
+</p>
+
+<!-- rumdl-enable MD033 -->
 
 ## Short Description
 
@@ -11,11 +30,10 @@ interfaces
 
 ## Long Description
 
-Fin Calc uses Python's `decimal.Decimal` for arithmetic such as `0.1 + 0.2`.
-Choose the PySide6 graphical calculator, the Textual terminal calculator, or
-Typer commands. All three use the same evaluator, saved settings, and JSON
-calculation history. A separate native iOS app for iPhone and iPad includes a
-keypad, calculation tape, display settings, and CSV export.
+Fin Calc is a decimal calculator for Windows, iPhone, and iPad. Calculate
+expressions, review past results, and keep a persistent calculation history.
+The graphical apps include a keypad, calculation tape, display settings, and
+CSV export. Windows also offers terminal and command-line interfaces.
 
 Licensed under the [MIT License](LICENSE).
 
@@ -81,10 +99,3 @@ Example calculations supported by the interface:
 log ( 100 ) = 2
 2 ^ 10 = 1024
 ```
-
-## Glossary
-
-- **Decimal precision**: Arithmetic based on decimal values instead of binary
-  floating-point values.
-- **Tape history**: The scrollable list of past calculations and results.
-- **Expression**: The calculation currently being entered, such as `2 + 3`.
