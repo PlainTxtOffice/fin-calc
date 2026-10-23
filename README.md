@@ -21,6 +21,14 @@ last_updated: 2026-10-23
   <a href="#usage-examples">Getting Started</a>
 </p>
 
+<p align="center">
+  <img src="assets/screenshots/windows-calculator.png"
+       alt="Fin Calc on Windows with sample calculations and a numeric keypad"
+       width="440">
+  <br>
+  <em>Windows graphical calculator with sample history.</em>
+</p>
+
 <!-- rumdl-enable MD033 -->
 
 ## Short Description
