@@ -4,7 +4,7 @@ version: 5.2.0
 product_versions:
   windows: "0.1.0"
   ios: "0.1.0"
-  android: "0.1.0"
+  android: "0.1.1"
 generated_from: "dev-docs/specs/USER_MANUAL_SPEC.instructions.md"
 ---
 
@@ -32,7 +32,7 @@ settings; nothing is synchronized between them.
 | --- | --- | --- |
 | Windows | Graphical window, terminal interface, and command line | 0.1.0 |
 | iOS (iPhone and iPad) | Touch app | 0.1.0 |
-| Android | Touch app | 0.1.0 |
+| Android | Touch app | 0.1.1 |
 
 <!-- Verified from: platform/windows/fin_calc/ui/cli/app.py [select_interface] -->
 <!-- Verified from: platform/windows/pyproject.toml [project.version] -->
@@ -109,14 +109,21 @@ copy is Unknown.
 
 #### Install on iOS and Android
 
-Unknown. No App Store, TestFlight, or Play Store release is available. The
-app appears as **Fin Calc** on the Home Screen or in the app launcher. Its
-identifier is `com.tripp.fin-calc` on iOS and `com.tripp.fincalc` on Android.
-The Android app requests no special permissions, such as network or storage
-access.
+On Android, install Fin Calc from
+[Google Play](https://play.google.com/store/apps/details?id=com.plaintxtoffice.fincalc).
+It requires Android 8.0 or later. The Android app requests no special
+permissions, such as network or storage access.
+
+Where to obtain the iOS app is Unknown. No App Store or TestFlight release is
+available.
+
+The app appears as **Fin Calc** on the Home Screen or in the app launcher. Its
+identifier is `com.tripp.fin-calc` on iOS and `com.plaintxtoffice.fincalc` on
+Android.
 
 <!-- Verified from: platform/ios/FinCalc.xcodeproj/project.pbxproj [PRODUCT_BUNDLE_IDENTIFIER, INFOPLIST_KEY_CFBundleDisplayName] -->
-<!-- Verified from: platform/android/app/build.gradle.kts [applicationId] -->
+<!-- Verified from: platform/android/app/build.gradle.kts [applicationId, minSdk] -->
+<!-- Verified from: Google Play Console production track, confirmed by the developer -->
 <!-- Verified from: platform/android/app/src/main/res/values/strings.xml [app_name] -->
 <!-- Verified from: platform/android/app/src/main/AndroidManifest.xml -->
 

@@ -65,7 +65,7 @@ in `app/src/test/resources/python-reference.json`.
 
 ## Release preparation
 
-The application ID is `com.tripp.fincalc`; the initial version is
+The application ID is `com.plaintxtoffice.fincalc`; the initial version is
 `0.1.0` with version code `1`. It compiles against API 37 and targets API 36.
 
 ```powershell

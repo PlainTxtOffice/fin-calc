@@ -104,7 +104,7 @@ class MainActivity : ComponentActivity() {
                         .setMessage("Remove all saved calculations from this device?")
                         .setNegativeButton("Cancel", null)
                         .setPositiveButton("Clear") { _, _ -> model.clearHistory() }.show()
-                    "About" -> AlertDialog.Builder(context).setTitle("Fin Calc 0.1.0")
+                    "About" -> AlertDialog.Builder(context).setTitle("Fin Calc 0.1.1")
                         .setMessage("Decimal calculator by Plain Text Office.\n\nTap a tape result to reuse its full precision. Use log ( … ) for base-10 logarithms.\n\nMIT License · Copyright 2026 Tripp")
                         .setPositiveButton("OK", null).show()
                 }
