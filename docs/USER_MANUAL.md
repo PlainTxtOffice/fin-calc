@@ -1,6 +1,6 @@
 ---
 last_updated: 2026-10-30
-version: 5.2.0
+version: 5.3.0
 product_versions:
   windows: "0.1.0"
   ios: "0.1.0"
@@ -684,9 +684,11 @@ you save them and are kept between runs.
 1. Set **Max history entries:**, or select **Unlimited**.
 1. Click **OK** to apply, or **Cancel** to discard.
 
-The terminal interface and command line use the same settings but cannot
-change them; they read the settings each time they start. If the settings
-cannot be saved, the status bar shows `Saving settings failed:` and the
+The terminal interface and command line use the same settings and read them
+each time they start. The CLI prompt can also change them with `config`; see
+[Use the Persistent Prompt](#use-the-persistent-prompt). The TUI cannot edit
+settings. If settings cannot be saved in the graphical window, the status bar
+shows `Saving settings failed:` and the
 reason, and the new settings apply only until you close the window. You can
 also edit the settings file by hand; see
 [Edit the Windows Data Files](#edit-the-windows-data-files).
@@ -867,8 +869,28 @@ fin-calc> exit
 
 The example assumes empty history and full-precision display. Each successful
 calculation is saved immediately. Results and `history` use the display
-settings loaded at startup; saved results retain full precision. Negative
+settings; saved results retain full precision. Negative
 expressions need no `--` prefix here.
+
+Type `config` to show current settings and allowed values. To change a setting:
+
+```text
+fin-calc> config decimal_places 4
+fin-calc> config decimal_places full
+fin-calc> config max_history_entries 500
+fin-calc> config max_history_entries unlimited
+fin-calc> config theme light
+```
+
+Decimal places accepts 0 through 6 or `full`. It changes displayed results
+and history immediately, while calculations and saved results keep full
+precision. History limits accept 1 through 10,000 or `unlimited` and take
+effect on the next calculation or restart. A limit that would discard older
+entries asks for confirmation; pressing **Enter** keeps the previous setting.
+Theme accepts `dark` or `light` and affects the graphical interface, not the
+console window. Restart another running interface to load changed settings.
+Changes persist automatically; invalid values or failed saves leave the active
+settings unchanged. `config` is a prompt command, not a one-shot CLI command.
 
 Use `help` to see supported syntax and commands. Blank lines are ignored.
 Invalid expressions and failed saves print `Error:` and keep the prompt open so

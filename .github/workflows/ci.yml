@@ -80,30 +80,37 @@ jobs:
         run: |
           sudo xcode-select --switch /Applications/Xcode_26.4.1.app/Contents/Developer
           xcodebuild -version
-      - name: Select a compatible iPhone simulator
+          sudo xcodebuild -runFirstLaunch
+      - name: Prepare iOS simulator runtime
+        timeout-minutes: 15
         run: |
+          xcrun simctl list runtimes
+          xcodebuild -downloadPlatform iOS -buildVersion 26.4.1 -architectureVariant arm64
+          xcrun simctl list runtimes --json > "$RUNNER_TEMP/ios-runtimes.json"
+          cat "$RUNNER_TEMP/ios-runtimes.json"
+      - name: Create and boot an iPhone simulator
+        timeout-minutes: 5
+        run: |
+          runtime_id=$(python3 -c '
+          import json, sys
+          runtimes = json.load(sys.stdin)["runtimes"]
+          matches = [runtime["identifier"] for runtime in runtimes
+                     if runtime["identifier"].startswith("com.apple.CoreSimulator.SimRuntime.iOS-")
+                     and runtime.get("version") == "26.4.1"
+                     and runtime.get("isAvailable") is True]
+          if not matches:
+              sys.exit("iOS 26.4.1 runtime is unavailable after installation; inspect the runtime list above")
+          print(matches[0])
+          ' < "$RUNNER_TEMP/ios-runtimes.json")
+          simulator_id=$(xcrun simctl create "Fin Calc CI" \
+            com.apple.CoreSimulator.SimDeviceType.iPhone-17 "$runtime_id")
+          xcrun simctl boot "$simulator_id"
+          xcrun simctl bootstatus "$simulator_id" -b
+          echo "SIMULATOR_ID=$simulator_id" >> "$GITHUB_ENV"
+          echo "Created iPhone simulator: $simulator_id ($runtime_id)"
           xcodebuild -showdestinations \
             -project platform/ios/FinCalc.xcodeproj \
-            -scheme FinCalc | tee "$RUNNER_TEMP/ios-destinations.txt"
-          simulator_id=$(python3 -c '
-          import re, sys
-          text = sys.stdin.read()
-          available = text.partition("Available destinations for")[2]
-          available = available.partition("Ineligible destinations for")[0]
-          for line in available.splitlines():
-              if not re.search(r"platform:\s*iOS Simulator\s*,", line):
-                  continue
-              if not re.search(r"name:\s*iPhone", line):
-                  continue
-              match = re.search(r"\bid:\s*([0-9A-Fa-f-]{36})\s*,", line)
-              if match:
-                  print(match.group(1))
-                  break
-          else:
-              sys.exit("No compatible iPhone simulator for FinCalc; check the deployment target and installed runtimes")
-          ' < "$RUNNER_TEMP/ios-destinations.txt")
-          echo "Selected iPhone simulator: $simulator_id"
-          echo "SIMULATOR_ID=$simulator_id" >> "$GITHUB_ENV"
+            -scheme FinCalc
       - name: Build and test
         run: |
           xcodebuild test \

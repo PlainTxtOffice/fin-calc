@@ -8,6 +8,7 @@ import typer
 
 from fin_calc.domains.calc.errors import EvaluationError
 from fin_calc.ui.cli.commands import show_history
+from fin_calc.ui.cli.settings.commands import run_config
 
 if TYPE_CHECKING:
     from fin_calc.application.session import CalculatorSession
@@ -17,6 +18,7 @@ _HELP = (
     "Supports +, -, *, /, ^, parentheses, and log(x) (base 10).\n"
     "Expressions need no quotes; negative numbers need no -- prefix.\n"
     "history: show saved calculations; help: show this help.\n"
+    "config: show settings; config <setting> <value>: save a change.\n"
     "exit or quit: leave the prompt. Ctrl+C or end of input also exits.\n"
     "Successful calculations are saved with full precision."
 )
@@ -35,6 +37,8 @@ def _read_expressions(session: CalculatorSession) -> None:
             typer.echo(_HELP)
         elif command == "history":
             show_history(session)
+        elif command.split(maxsplit=1)[0] == "config":
+            run_config(session, command.split()[1:])
         else:
             try:
                 result = session.calculate(expression)

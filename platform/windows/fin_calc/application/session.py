@@ -7,7 +7,7 @@ from datetime import UTC, datetime
 from typing import TYPE_CHECKING
 
 from fin_calc.adapters.history_store import load_history, write_history
-from fin_calc.adapters.settings_store import load_settings
+from fin_calc.adapters.settings_store import load_settings, write_settings
 from fin_calc.config.path_handler import HISTORY_FILE, SETTINGS_FILE
 from fin_calc.domains.calc.evaluator import evaluate
 from fin_calc.domains.calc.formatting import format_result
@@ -27,6 +27,16 @@ class CalculatorSession:
     history: History
     settings: Settings
     history_path: Path
+    settings_path: Path = SETTINGS_FILE
+
+    def update_settings(self, settings: Settings) -> None:
+        """Persist settings before applying them to this session.
+
+        History limits take effect at the next calculation or session load.
+        A failed settings write leaves the active settings unchanged.
+        """
+        write_settings(settings, self.settings_path)
+        self.settings = settings
 
     def calculate(self, expression: str) -> str:
         """Evaluate and save an expression, returning its display result.
@@ -51,4 +61,4 @@ def load_session() -> CalculatorSession:
     history = load_history(HISTORY_FILE)
     settings = load_settings(SETTINGS_FILE)
     history.trim_to(settings.max_history_entries)
-    return CalculatorSession(history, settings, HISTORY_FILE)
+    return CalculatorSession(history, settings, HISTORY_FILE, SETTINGS_FILE)
