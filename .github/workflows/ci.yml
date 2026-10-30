@@ -23,6 +23,7 @@ jobs:
     defaults:
       run:
         shell: pwsh
+        working-directory: platform/windows
     steps:
       - uses: actions/checkout@v7
         with:
@@ -37,7 +38,7 @@ jobs:
       - name: Lint
         run: .venv/Scripts/python.exe -m ruff check .
       - name: Type check
-        run: .venv/Scripts/python.exe -m mypy src
+        run: .venv/Scripts/python.exe -m mypy fin_calc
       - name: Test
         run: .venv/Scripts/python.exe -m pytest
 
@@ -48,7 +49,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: src/android
+        working-directory: platform/android
     steps:
       - uses: actions/checkout@v7
         with:
@@ -93,7 +94,7 @@ jobs:
       - name: Build and test
         run: |
           xcodebuild test \
-            -project src/ios/FinCalc.xcodeproj \
+            -project platform/ios/FinCalc.xcodeproj \
             -scheme FinCalc \
             -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
             -parallel-testing-enabled NO \

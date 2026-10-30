@@ -18,6 +18,7 @@ __pycache__/
 
 # directories
 logs/
+.pytest-temp/
 build/
 main.build/
 main.dist/
@@ -34,7 +35,7 @@ exports/
 dev-docs/packaging/nuitka/installing_nuitka.md
 
 
-# Xcode (src/ios)
+# Xcode (platform/ios)
 xcuserdata/
 DerivedData/
 *.xcuserstate
@@ -42,3 +43,8 @@ DerivedData/
 # Local Android Studio / IntelliJ project state
 .idea/
 *.iml
+# Private Nuitka setup notes hold an access token; never commit them.
+installing_nuitka.md
+
+# Debug feedback pulled from devices (personal data)
+platform/ios/dev-feedback/

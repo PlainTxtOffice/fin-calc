@@ -1,0 +1,98 @@
+#:schema https://json.schemastore.org/pyproject.json
+
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fin-calc"
+version = "0.1.0"
+description = "Decimal-precision calculator with graphical, terminal, and command-line interfaces"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+authors = [{ name = "Tripp", email = "tripp@plaintxtoffice.com" }]
+license-files = ["LICENSE"]
+dependencies = ["PySide6>=6.7", "textual>=6.6", "typer>=0.21"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.14", "rumdl>=0.0.170", "mypy>=1.18"]
+
+[project.scripts]
+fin-calc = "fin_calc.main:main"
+
+[tool.setuptools]
+
+[tool.fin_calc]
+app-data-dir = "fin-calc"
+product-name = "Fin Calc"
+company-name = "Plain Text Office LLC"
+copyright = "Copyright © 2026 Plain Text Office LLC"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["fin_calc", "fin_calc.*"]
+
+[tool.pytest.ini_options]
+addopts = "-s --basetemp=tests/.pytest-temp"
+testpaths = ["tests"]
+pythonpath = ["."]
+tmp_path_retention_policy = "none"
+
+[tool.ruff]
+src = ["."]
+line-length = 80
+extend-exclude = ["tests"]
+# Apply the exclusion when the editor or a hook passes a file directly.
+force-exclude = true
+
+[tool.ruff.lint.isort]
+known-first-party = ["fin_calc"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    # No per-file copyright headers.
+    "CPY001",
+    # Conflicts with ruff format; its added commas stop calls from rejoining.
+    "COM812",
+    # Pick one of each conflicting docstring pair: D211 and D212 stay on.
+    "D203",
+    "D213",
+    "DOC201",
+    "DOC501",
+]
+
+[tool.ruff.lint.pep8-naming]
+# Qt and logging overrides must keep their camelCase names.
+extend-ignore-names = ["closeEvent", "formatTime", "paintCell", "resizeEvent"]
+
+
+[tool.ruff.lint.per-file-ignores]
+"main.py" = ["INP001"]
+"**/scripts/nuitka/*.py" = ["INP001"]
+"fin_calc/main.py" = ["E402"]
+# Pytest style: plain asserts, optional annotations, fixture-only arguments,
+# private access, and local imports are expected in tests.
+"tests/**" = [
+    "ANN",
+    "ARG001",
+    "ARG005",
+    "INP001",
+    "PLC0415",
+    "PLR2004",
+    "S101",
+    "SLF001",
+]
+
+[tool.ruff.lint.flake8-import-conventions.extend-aliases]
+"decimal.Decimal" = "D"
+
+[tool.mypy]
+mypy_path = "$MYPY_CONFIG_FILE_DIR"
+explicit_package_bases = true
+exclude = ['(^|[\\/])tests([\\/]|$)']
+ignore_missing_imports = true
+
+[tool.pymarkdown]
+extensions.front-matter.enabled = true
