@@ -67,7 +67,7 @@ jobs:
 
   ios:
     name: iOS simulator tests
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 30
     defaults:
       run:
@@ -77,19 +77,32 @@ jobs:
         with:
           persist-credentials: false
       - name: Select Xcode
-        run: sudo xcode-select --switch /Applications/Xcode_26.2.app/Contents/Developer
-      - name: Select an available iPhone simulator
         run: |
-          simulator_id=$(xcrun simctl list devices available --json | python3 -c '
-          import json, sys
-          devices = json.load(sys.stdin)["devices"]
-          phones = [device["udid"] for runtime, rows in devices.items()
-                    if ".iOS-" in runtime for device in rows
-                    if device["name"].startswith("iPhone")]
-          if not phones:
-              sys.exit("No available iPhone simulator found")
-          print(phones[0])
-          ')
+          sudo xcode-select --switch /Applications/Xcode_26.4.1.app/Contents/Developer
+          xcodebuild -version
+      - name: Select a compatible iPhone simulator
+        run: |
+          xcodebuild -showdestinations \
+            -project platform/ios/FinCalc.xcodeproj \
+            -scheme FinCalc | tee "$RUNNER_TEMP/ios-destinations.txt"
+          simulator_id=$(python3 -c '
+          import re, sys
+          text = sys.stdin.read()
+          available = text.partition("Available destinations for")[2]
+          available = available.partition("Ineligible destinations for")[0]
+          for line in available.splitlines():
+              if not re.search(r"platform:\s*iOS Simulator\s*,", line):
+                  continue
+              if not re.search(r"name:\s*iPhone", line):
+                  continue
+              match = re.search(r"\bid:\s*([0-9A-Fa-f-]{36})\s*,", line)
+              if match:
+                  print(match.group(1))
+                  break
+          else:
+              sys.exit("No compatible iPhone simulator for FinCalc; check the deployment target and installed runtimes")
+          ' < "$RUNNER_TEMP/ios-destinations.txt")
+          echo "Selected iPhone simulator: $simulator_id"
           echo "SIMULATOR_ID=$simulator_id" >> "$GITHUB_ENV"
       - name: Build and test
         run: |
