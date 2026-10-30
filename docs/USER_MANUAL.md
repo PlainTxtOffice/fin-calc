@@ -1,6 +1,6 @@
 ---
 last_updated: 2026-10-30
-version: 5.3.0
+version: 5.2.0
 product_versions:
   windows: "0.1.0"
   ios: "0.1.0"
@@ -107,19 +107,15 @@ copy is Unknown.
 <!-- Verified from: platform/windows/main.py -->
 <!-- Verified from: platform/windows/fin_calc/config/path_handler.py [IS_COMPILED, USER_DATA_DIR] -->
 
-#### Install on iOS
+#### Install on iOS and Android
 
-Unknown. No App Store or TestFlight release is available. The app's bundle
-identifier is `com.tripp.fin-calc` and its Home Screen name is **Fin Calc**.
+Unknown. No App Store, TestFlight, or Play Store release is available. The
+app appears as **Fin Calc** on the Home Screen or in the app launcher. Its
+identifier is `com.tripp.fin-calc` on iOS and `com.tripp.fincalc` on Android.
+The Android app requests no special permissions, such as network or storage
+access.
 
 <!-- Verified from: platform/ios/FinCalc.xcodeproj/project.pbxproj [PRODUCT_BUNDLE_IDENTIFIER, INFOPLIST_KEY_CFBundleDisplayName] -->
-
-#### Install on Android
-
-Unknown. No published store release was found. The app's application ID is
-`com.tripp.fincalc` and its launcher name is **Fin Calc**. The app
-requests no special permissions, such as network or storage access.
-
 <!-- Verified from: platform/android/app/build.gradle.kts [applicationId] -->
 <!-- Verified from: platform/android/app/src/main/res/values/strings.xml [app_name] -->
 <!-- Verified from: platform/android/app/src/main/AndroidManifest.xml -->
@@ -199,54 +195,40 @@ options. It accepts the same options and commands.
 
 <!-- Verified from: platform/windows/main.py -->
 
-#### Start on iOS
+#### Start on iOS and Android
 
-Tap **Fin Calc** on the Home Screen. The calculator opens with your saved tape
-at the top, the display showing `0`, and the keypad below. When the tape is
-empty, it shows `Calculations appear here`.
+Tap **Fin Calc** on the Home Screen or in the app launcher. The calculator
+opens with your saved tape, the display, and the keypad. On iOS, an empty tape
+shows `Calculations appear here`.
+
+On Android, the status line shows `Loading…` while saved data loads, and the
+**⋮** menu does not open until it finishes. If the saved data cannot be read,
+the status line shows
+`Could not load saved history and settings. Defaults are in use.`
 
 <!-- Verified from: platform/ios/FinCalc/FinCalcApp.swift [FinCalcApp] -->
 <!-- Verified from: platform/ios/FinCalc/UI/Views/TapeView.swift [TapeView] -->
 <!-- Verified from: platform/ios/FinCalc/UI/Views/DisplayView.swift [DisplayView] -->
-
-#### Start on Android
-
-Tap **Fin Calc** in the app launcher. While saved data loads, the status line
-shows `Loading…` and the **⋮** menu does not open. If the saved data cannot be
-read, the status line shows
-`Could not load saved history and settings. Defaults are in use.`
-
 <!-- Verified from: platform/android/app/src/main/AndroidManifest.xml -->
 <!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/application/CalculatorModel.kt [ScreenState, CalculatorModel.init] -->
 <!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/MainActivity.kt [showMenu] -->
 
 ### Quit Fin Calc
 
-#### Quit on Windows
-
-- **Graphical window**: choose **File** > **Exit**, or close the window.
-  Fin Calc finishes saving history before it closes.
-- **Terminal interface**: press **Ctrl+Q**.
-- **Command line**: at `fin-calc>`, type `exit` or `quit`, press **Ctrl+C**, or
-  end input (**Ctrl+Z**, then **Enter** on Windows). One-shot commands end on
-  their own.
+- **Windows graphical window**: choose **File** > **Exit**, or close the
+  window. Fin Calc finishes saving history before it closes.
+- **Windows terminal interface**: press **Ctrl+Q**.
+- **Windows command line**: at `fin-calc>`, type `exit` or `quit`, press
+  **Ctrl+C**, or end input (**Ctrl+Z**, then **Enter**). One-shot commands end
+  on their own.
+- **iOS and Android**: the app has no quit command. Leave it as you leave any
+  app. Your history is already saved: iOS finishes saving when the app moves
+  to the background, and Android saves each change as soon as it is made.
 
 <!-- Verified from: platform/windows/fin_calc/ui/gui/menus/menu_bar.py [build_menu_bar] -->
 <!-- Verified from: platform/windows/fin_calc/ui/gui/views/root_window.py [RootWindow.closeEvent] -->
 <!-- Verified from: platform/windows/fin_calc/ui/tui/app.py [CalculatorApp.BINDINGS] -->
-
-#### Quit on iOS
-
-The app has no quit command. Leave it as you leave any app. Fin Calc finishes
-saving history when it moves to the background.
-
 <!-- Verified from: platform/ios/FinCalc/FinCalcApp.swift [FinCalcApp.body] -->
-
-#### Quit on Android
-
-The app has no quit command. Leave it as you leave any app. Each change is
-saved as soon as it is made.
-
 <!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/application/CalculatorSession.kt [commit] -->
 
 ## Getting Around
@@ -286,17 +268,22 @@ display and tape also show these symbols.
 
 ### Tour the Calculator
 
-#### Tour the Windows Graphical Window
+The graphical window and the touch apps differ in their menus and a few
+layout details:
 
-The window has a menu bar with **File**, **Edit**, and **Help** menus, then
-the tape, the display, and the keypad. Error messages appear in red under the
-expression. Messages about exports and settings appear in the status bar at
-the bottom of the window. You can also type on the keyboard instead of
-clicking keys.
+| Platform | Menus | Layout and feedback |
+| --- | --- | --- |
+| Windows graphical window | A menu bar with **File**, **Edit**, and **Help**. | Errors appear in red under the expression. Export and settings messages appear in the status bar at the bottom. You can type on the keyboard instead of clicking keys. |
+| iOS | A **History** menu (clock icon) on the left of the top bar and a **Settings** button (gear icon) on the right. | The keypad fills the lower half of the screen. iPhone stays in portrait; iPad turns with the device. Errors also give haptic feedback. |
+| Android | A **⋮** button on the right of the top bar. | In landscape, the tape moves to the left and the display and keypad to the right. |
 
 <!-- Verified from: platform/windows/fin_calc/ui/gui/menus/menu_bar.py [build_menu_bar] -->
 <!-- Verified from: platform/windows/fin_calc/ui/gui/views/display.py [DisplayView] -->
 <!-- Verified from: platform/windows/fin_calc/ui/gui/views/root_window.py [RootWindow._on_export_history, RootWindow.keyPressEvent] -->
+<!-- Verified from: platform/ios/FinCalc/UI/Views/RootView.swift [RootView.toolbarContent, RootView.body] -->
+<!-- Verified from: platform/ios/FinCalc.xcodeproj/project.pbxproj [INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone, INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad] -->
+<!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/MainActivity.kt [buildViews] -->
+<!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/ui/CalculatorView.kt [CalculatorView.init] -->
 
 #### Tour the Windows Terminal Interface
 
@@ -318,26 +305,6 @@ The commands are `calculate` and `history`. Add `--help` after any command to
 see its help.
 
 <!-- Verified from: platform/windows/fin_calc/ui/cli/app.py [app] -->
-
-#### Tour the iOS Screen
-
-The top bar shows **Fin Calc**, a **History** menu (clock icon) on the left,
-and a **Settings** button (gear icon) on the right. Below are the tape, the
-display, and the keypad, which fills the lower half of the screen. On iPhone
-the app stays in portrait; on iPad it turns with the device. When an error
-appears, the device gives error haptic feedback.
-
-<!-- Verified from: platform/ios/FinCalc/UI/Views/RootView.swift [RootView.toolbarContent, RootView.body] -->
-<!-- Verified from: platform/ios/FinCalc.xcodeproj/project.pbxproj [INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone, INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad] -->
-
-#### Tour the Android Screen
-
-The top bar shows **Fin Calc** and a **⋮** button that opens the menu. In
-portrait, the tape is above the display and keypad. In landscape, the tape is
-on the left and the display and keypad are on the right.
-
-<!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/MainActivity.kt [buildViews] -->
-<!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/ui/CalculatorView.kt [CalculatorView.init] -->
 
 ### Find Help
 
@@ -408,20 +375,29 @@ at that point and shows `Invalid input:` followed by the key. For example:
 <!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/domains/calc/ExpressionBuilder.kt [ExpressionBuilder] -->
 <!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/application/CalculatorSession.kt [press] -->
 
-#### Enter an Expression on Windows
+In the Windows graphical window and the iOS and Android apps:
 
-In the graphical window:
+1. Click or tap keypad keys. In the Windows window, or on iOS with a hardware
+   keyboard, you can also type digits, `.`, `+`, `-`, `*`, `/`, `^`, `(`, and
+   `)`, and press **L** to enter `log`.
+1. Click or tap **=**. On a keyboard, press **Enter** on Windows or **Return**
+   on iOS.
 
-1. Click keypad keys, or type digits, `.`, `+`, `-`, `*`, `/`, `^`, `(`, and
-   `)` on the keyboard. Press **L** to enter `log`.
-1. Press **Enter** or click **=**.
-
-The display shows the result, and the calculation is added to the tape.
+The display shows the result, and the calculation is added to the tape. On
+iOS and Android, you can select and copy the display text. On Android, the
+keypad stops accepting keys when the expression reaches 128 symbols or 2,048
+characters.
 
 <!-- Verified from: platform/windows/fin_calc/ui/gui/views/keypad.py [KEY_MAP] -->
 <!-- Verified from: platform/windows/fin_calc/ui/gui/views/root_window.py [RootWindow.keyPressEvent, RootWindow._on_evaluate] -->
+<!-- Verified from: platform/ios/FinCalc/UI/Views/RootView.swift [RootView.pressHardwareKey] -->
+<!-- Verified from: platform/ios/FinCalc/Application/CalculatorSession.swift [evaluate] -->
+<!-- Verified from: platform/ios/FinCalc/UI/Views/DisplayView.swift [DisplayView] -->
+<!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/application/CalculatorSession.kt [press, calculate] -->
+<!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/ui/CalculatorView.kt [CalculatorView] -->
+<!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/domains/calc/ExpressionBuilder.kt [add] -->
 
-In the terminal interface:
+#### Enter an Expression in the Windows Terminal Interface
 
 1. Type the whole expression in the entry field, such as `0.1 + 0.2` or
    `log(100)`.
@@ -433,7 +409,9 @@ entry field clears. If the expression is not valid, the result line shows
 
 <!-- Verified from: platform/windows/fin_calc/ui/tui/app.py [CalculatorApp.on_input_submitted] -->
 
-On the command line, from `platform/windows/`:
+#### Enter an Expression on the Windows Command Line
+
+From `platform/windows/`:
 
 ```powershell
 .venv/Scripts/python.exe -m fin_calc.main calculate "0.1 + 0.2"
@@ -458,32 +436,6 @@ these rules:
   `Invalid input at character` and its position.
 
 <!-- Verified from: platform/windows/fin_calc/domains/calc/parsing.py [parse_expression] -->
-
-#### Enter an Expression on iOS
-
-1. Tap keypad keys. With a hardware keyboard, you can also type digits and
-   operators, and press **L** for `log`.
-1. Tap **=**, or press **Return** on a hardware keyboard.
-
-The display shows the result, and the calculation is added to the tape. You
-can select and copy the display text.
-
-<!-- Verified from: platform/ios/FinCalc/UI/Views/RootView.swift [RootView.pressHardwareKey] -->
-<!-- Verified from: platform/ios/FinCalc/Application/CalculatorSession.swift [evaluate] -->
-<!-- Verified from: platform/ios/FinCalc/UI/Views/DisplayView.swift [DisplayView] -->
-
-#### Enter an Expression on Android
-
-1. Tap keypad keys.
-1. Tap **=**.
-
-The display shows the result, and the calculation is added to the tape. You
-can select and copy the display text. The keypad stops accepting keys when the
-expression reaches 128 symbols or 2,048 characters.
-
-<!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/application/CalculatorSession.kt [press, calculate] -->
-<!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/ui/CalculatorView.kt [CalculatorView] -->
-<!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/domains/calc/ExpressionBuilder.kt [add] -->
 
 ### Correct or Clear the Current Expression
 
@@ -522,33 +474,21 @@ Continuing uses the result's full precision, even when the display rounds it.
 
 ### Reuse a Result From the Tape
 
-A tape result can be placed into the current expression with its full
-precision. It is added only at the start of an expression or after an
-operator or `(`; if the expression ends with a number, nothing happens.
+Click or tap a line on the tape to place its result into the current
+expression with its full precision. It is added only at the start of an
+expression or after an operator or `(`; if the expression ends with a number,
+nothing happens.
+
+On iOS, you can also touch and hold a line, then choose **Use Result**, or
+choose **Copy Result** to copy the full-precision result. The Windows terminal
+interface and command line cannot reuse results.
 
 <!-- Verified from: platform/windows/fin_calc/domains/calc/expression.py [ExpressionBuilder.insert_result] -->
-<!-- Verified from: platform/ios/FinCalc/Domains/Calc/ExpressionBuilder.swift [insertResult] -->
-<!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/domains/calc/ExpressionBuilder.kt [insertResult] -->
-
-#### Reuse a Result on Windows
-
-In the graphical window, click a line on the tape. The terminal interface and
-command line cannot reuse results.
-
 <!-- Verified from: platform/windows/fin_calc/ui/gui/views/tape.py [TapeView._on_item_clicked] -->
 <!-- Verified from: platform/windows/fin_calc/ui/tui/app.py [CalculatorApp.compose] -->
-
-#### Reuse a Result on iOS
-
-Tap a line on the tape. You can also touch and hold a line, then choose
-**Use Result**, or choose **Copy Result** to copy the full-precision result.
-
+<!-- Verified from: platform/ios/FinCalc/Domains/Calc/ExpressionBuilder.swift [insertResult] -->
 <!-- Verified from: platform/ios/FinCalc/UI/Views/TapeView.swift [TapeView.row] -->
-
-#### Reuse a Result on Android
-
-Tap a line on the tape.
-
+<!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/domains/calc/ExpressionBuilder.kt [insertResult] -->
 <!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/ui/TapeView.kt [Rows.onBindViewHolder] -->
 
 ### Review Saved History
@@ -582,37 +522,24 @@ calculations first when the limit is reached.
 Clearing removes every saved calculation on that device. It cannot be undone,
 so export the history first if you want to keep it.
 
-<!-- Verified from: platform/windows/fin_calc/ui/gui/views/root_window.py [RootWindow._on_clear_history] -->
-<!-- Verified from: platform/ios/FinCalc/Application/CalculatorSession.swift [clearHistory] -->
-<!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/application/CalculatorSession.kt [clearHistory] -->
+1. Choose **Clear History**:
+   - Windows graphical window: **File** > **Clear History**, or right-click
+     the tape.
+   - iOS: the **History** menu. It is unavailable when the tape is empty.
+   - Android: **⋮**.
+1. Confirm when asked. The confirming button is **Yes** on Windows,
+   **Clear History** on iOS (in `Clear All History?`), and **Clear** on
+   Android. To keep your history, choose **No** on Windows or **Cancel** on
+   Android.
 
-#### Clear History on Windows
-
-In the graphical window, choose **File** > **Clear History**, or right-click
-the tape and choose **Clear History**. In the **Clear History** confirmation,
-choose **Yes** to clear, or **No** to keep your history. The terminal interface
-and command line cannot clear history.
+The Windows terminal interface and command line cannot clear history.
 
 <!-- Verified from: platform/windows/fin_calc/ui/gui/menus/menu_bar.py [build_menu_bar] -->
 <!-- Verified from: platform/windows/fin_calc/ui/gui/views/tape.py [TapeView.contextMenuEvent] -->
 <!-- Verified from: platform/windows/fin_calc/ui/gui/views/root_window.py [RootWindow._on_clear_history] -->
-
-#### Clear History on iOS
-
-1. Tap the **History** menu.
-1. Tap **Clear History**.
-1. In the `Clear All History?` confirmation, tap **Clear History**.
-
-**Clear History** is unavailable when the tape is empty.
-
+<!-- Verified from: platform/ios/FinCalc/Application/CalculatorSession.swift [clearHistory] -->
 <!-- Verified from: platform/ios/FinCalc/UI/Views/RootView.swift [RootView.toolbarContent, RootView.body] -->
-
-#### Clear History on Android
-
-1. Tap **⋮** > **Clear History**.
-1. In the `Clear History?` confirmation, tap **Clear**, or **Cancel** to keep
-   your history.
-
+<!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/application/CalculatorSession.kt [clearHistory] -->
 <!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/MainActivity.kt [showMenu] -->
 
 ### Understand Precision and Limits
@@ -677,56 +604,44 @@ you save them and are kept between runs.
 
 ### Change Settings
 
-#### Change Settings on Windows
+1. Open the settings: **Edit** > **Settings...** in the Windows graphical
+   window, **Settings** on iOS, or **⋮** > **Settings** on Android.
+1. Choose **Decimal places** and **Theme**.
+1. Turn on **Unlimited**, or turn it off and enter the maximum number of
+   history entries.
+1. Save your changes with **OK** on Windows or **Save** on iOS and Android, or
+   choose **Cancel** to discard them.
 
-1. In the graphical window, choose **Edit** > **Settings...**.
-1. Choose **Decimal places:** and **Theme:**.
-1. Set **Max history entries:**, or select **Unlimited**.
-1. Click **OK** to apply, or **Cancel** to discard.
+The history fields are labeled differently on each platform:
 
-The terminal interface and command line use the same settings and read them
-each time they start. The CLI prompt can also change them with `config`; see
-[Use the Persistent Prompt](#use-the-persistent-prompt). The TUI cannot edit
-settings. If settings cannot be saved in the graphical window, the status bar
-shows `Saving settings failed:` and the
-reason, and the new settings apply only until you close the window. You can
-also edit the settings file by hand; see
-[Edit the Windows Data Files](#edit-the-windows-data-files).
+| Platform | Unlimited switch | Limit field |
+| --- | --- | --- |
+| Windows | **Unlimited** | **Max history entries:** |
+| iOS | **Unlimited**, under **History** | **Max entries** |
+| Android | **Unlimited history** | **Maximum history entries (1–10,000)** |
+
+What happens with an out-of-range limit or a failed save depends on the
+platform:
+
+| Platform | Limit outside 1 to 10,000 | Settings cannot be saved |
+| --- | --- | --- |
+| Windows | The field accepts only allowed values. | The status bar shows `Saving settings failed:` and the reason. The new settings apply until you close the window. |
+| iOS | Changed to the nearest allowed value when you save. | The status line shows `Settings could not be saved`. |
+| Android | The field shows `Enter a whole number from 1 to 10,000` and the dialog stays open. | The status line shows `Could not save. Your previous history is unchanged.` Your previous settings stay in effect. |
+
+On Windows, the terminal interface and command line use the same settings and
+read them each time they start. The `fin-calc>` prompt can also change them
+with `config`; see [Use the Persistent Prompt](#use-the-persistent-prompt).
+The terminal interface cannot edit settings. You can also edit the settings
+file by hand; see [Edit the Windows Data Files](#edit-the-windows-data-files).
 
 <!-- Verified from: platform/windows/fin_calc/ui/gui/dialogs/settings_dialog.py [SettingsDialog] -->
 <!-- Verified from: platform/windows/fin_calc/ui/gui/views/root_window.py [RootWindow._on_open_settings, RootWindow._apply_settings] -->
 <!-- Verified from: platform/windows/fin_calc/application/session.py [load_session] -->
 <!-- Verified from: platform/windows/fin_calc/ui/tui/app.py [CalculatorApp.__init__] -->
-
-#### Change Settings on iOS
-
-1. Tap **Settings**.
-1. Under **Display**, choose **Decimal places** and **Theme**.
-1. Under **History**, turn **Unlimited** on, or turn it off and enter
-   **Max entries**.
-1. Tap **Save** to apply, or **Cancel** to discard.
-
-A **Max entries** value outside 1 to 10,000 is changed to the nearest allowed
-value when you save. If the settings cannot be saved, the status line shows
-`Settings could not be saved`.
-
+<!-- Verified from: platform/windows/fin_calc/ui/cli/repl.py [run_repl] -->
 <!-- Verified from: platform/ios/FinCalc/UI/Views/SettingsView.swift [SettingsView.body, selectedSettings] -->
 <!-- Verified from: platform/ios/FinCalc/Application/CalculatorSession.swift [applySettings] -->
-
-#### Change Settings on Android
-
-1. Tap **⋮** > **Settings**.
-1. Choose **Decimal places** and **Theme**.
-1. Turn **Unlimited history** on, or turn it off and enter
-   **Maximum history entries (1–10,000)**.
-1. Tap **Save** to apply, or **Cancel** to discard.
-
-If the limit is not a whole number from 1 to 10,000, the field shows
-`Enter a whole number from 1 to 10,000` and the dialog stays open. If the
-settings cannot be saved, the status line shows
-`Could not save. Your previous history is unchanged.` and your previous
-settings stay in effect.
-
 <!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/ui/SettingsDialog.kt [showSettings] -->
 <!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/application/CalculatorModel.kt [submit] -->
 <!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/application/CalculatorSession.kt [commit] -->
@@ -743,43 +658,28 @@ results, whatever the **Decimal places** setting.
 
 ### Export History to CSV
 
-#### Export on Windows
+1. Choose the export command for your platform (see the table below).
+1. Choose where to save or send the file.
+1. Confirm the save.
 
-1. In the graphical window, choose **File** > **Export History...**.
-1. In the **Export History** dialog, keep the suggested `history.csv` in the
-   `exports` folder, or choose another location and name.
-1. Click **Save**.
+| Platform | Command | Where you choose the location | Suggested name |
+| --- | --- | --- | --- |
+| Windows graphical window | **File** > **Export History...** | The **Export History** dialog, starting in the `exports` folder; click **Save** | `history.csv` |
+| iOS | **History** menu > **Export CSV** | The share sheet, which can also send the file | `history.csv` |
+| Android | **⋮** > **Export History** | Android's file picker | `fin-calc-history.csv` |
 
-If the name does not end in `.csv`, Fin Calc adds it. A file with the same
-name is replaced. The status bar shows `Exported history to` and the path, or
-`Export failed:` and the reason. The terminal interface and command line
-cannot export.
+On Windows and Android, saving over an existing file replaces it, and the
+status bar or status line reports the result. On Windows, a name without
+`.csv` gets it added, and the message is `Exported history to` and the path,
+or `Export failed:` and the reason. On Android, it is `History exported.` or
+`Could not export history. Choose another location and try again.` On iOS,
+**Export CSV** is unavailable when the tape is empty. The Windows terminal
+interface and command line cannot export.
 
 <!-- Verified from: platform/windows/fin_calc/ui/gui/views/root_window.py [RootWindow._on_export_history] -->
 <!-- Verified from: platform/windows/fin_calc/config/path_handler.py [EXPORTS_DIR] -->
 <!-- Verified from: platform/windows/fin_calc/adapters/history_export.py [write_history_csv] -->
-
-#### Export on iOS
-
-1. Tap the **History** menu.
-1. Tap **Export CSV**.
-1. In the share sheet, choose where to send or save `history.csv`.
-
-**Export CSV** is unavailable when the tape is empty.
-
 <!-- Verified from: platform/ios/FinCalc/UI/Views/RootView.swift [RootView.toolbarContent, HistoryCSV] -->
-
-#### Export on Android
-
-1. Tap **⋮** > **Export History**.
-1. In Android's file picker, choose a folder. The suggested name is
-   `fin-calc-history.csv`.
-1. Confirm the save in the file picker.
-
-Choosing an existing file replaces its contents. When the export succeeds, the
-status line shows `History exported.` If it fails, the status line shows
-`Could not export history. Choose another location and try again.`
-
 <!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/MainActivity.kt [export, showMenu] -->
 <!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/application/CalculatorModel.kt [export] -->
 
@@ -905,69 +805,49 @@ calculation.
 
 ### Use Menu Commands
 
-#### Menu Commands on Windows
+Menu commands have no keyboard shortcuts. A dash means the platform does not
+have the command.
 
-| Menu | Command | Shortcut | What it does |
+| What it does | Windows graphical window | iOS | Android |
 | --- | --- | --- | --- |
-| **File** | **Export History...** | None | Saves history to a CSV file. |
-| **File** | **Clear History** | None | Removes all saved history after confirmation. |
-| **File** | **Exit** | None | Closes the window. |
-| **Edit** | **Settings...** | None | Opens the settings. |
-| **Help** | **Keyboard Shortcuts** | None | Lists keyboard keys. |
-| **Help** | **About** | None | Shows the version. |
-| Tape (right-click) | **Clear History** | None | Removes all saved history after confirmation. |
+| Save history to a CSV file | **File** > **Export History...** | **History** > **Export CSV** | **⋮** > **Export History** |
+| Remove all saved history after confirmation | **File** > **Clear History**, or right-click the tape | **History** > **Clear History** | **⋮** > **Clear History** |
+| Open the settings | **Edit** > **Settings...** | **Settings** button | **⋮** > **Settings** |
+| Show the version | **Help** > **About** | **Settings** > **About** | **⋮** > **About**, which also shows short tips |
+| List keyboard keys | **Help** > **Keyboard Shortcuts** | — | — |
+| Open the privacy policy | — | — | **⋮** > **Privacy Policy** |
+| Place a tape result in the expression | Click the line | Tap the line, or touch and hold it and choose **Use Result** | Tap the line |
+| Copy a full-precision tape result | — | Touch and hold the line and choose **Copy Result** | — |
+| Close the program | **File** > **Exit** | — | — |
 
-Press **Alt+F**, **Alt+E**, or **Alt+H** to open the **File**, **Edit**, or
-**Help** menu.
+**Privacy Policy** opens `https://plaintxtoffice.com/privacy-policy/` in a
+browser, or shows the address if no browser is available. On Windows, press
+**Alt+F**, **Alt+E**, or **Alt+H** to open the **File**, **Edit**, or **Help**
+menu.
 
 <!-- Verified from: platform/windows/fin_calc/ui/gui/menus/menu_bar.py [build_menu_bar] -->
-<!-- Verified from: platform/windows/fin_calc/ui/gui/views/tape.py [TapeView.contextMenuEvent] -->
-
-#### Menu Commands on iOS
-
-| Menu | Command | Shortcut | What it does |
-| --- | --- | --- | --- |
-| **History** | **Export CSV** | None | Shares history as a CSV file. |
-| **History** | **Clear History** | None | Removes all saved history after confirmation. |
-| **Settings** button | None | None | Opens the settings. |
-| Tape line (touch and hold) | **Use Result** | None | Places the result in the expression. |
-| Tape line (touch and hold) | **Copy Result** | None | Copies the full-precision result. |
-
+<!-- Verified from: platform/windows/fin_calc/ui/gui/views/tape.py [TapeView.contextMenuEvent, TapeView._on_item_clicked] -->
 <!-- Verified from: platform/ios/FinCalc/UI/Views/RootView.swift [RootView.toolbarContent] -->
+<!-- Verified from: platform/ios/FinCalc/UI/Views/SettingsView.swift [SettingsView.body] -->
 <!-- Verified from: platform/ios/FinCalc/UI/Views/TapeView.swift [TapeView.row] -->
-
-#### Menu Commands on Android
-
-| Menu | Command | Shortcut | What it does |
-| --- | --- | --- | --- |
-| **⋮** | **Settings** | None | Opens the settings. |
-| **⋮** | **Export History** | None | Saves history to a CSV file. |
-| **⋮** | **Clear History** | None | Removes all saved history after confirmation. |
-| **⋮** | **Privacy Policy** | None | Opens `https://plaintxtoffice.com/privacy-policy/` in a browser, or shows the address if no browser is available. |
-| **⋮** | **About** | None | Shows the version and short tips. |
-
 <!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/MainActivity.kt [showMenu] -->
 
 ### Use Keyboard Shortcuts
 
-| Platform | Key | What it does |
-| --- | --- | --- |
-| Windows graphical window | **Enter** or **Return** | Evaluates the expression. |
-| Windows graphical window | **Esc** | Clears the expression. |
-| Windows graphical window | **Backspace** | Deletes the last character. |
-| Windows graphical window | **0**–**9**, **.**, **+**, **-**, **\***, **/**, **^**, **(**, **)** | Enters that key. |
-| Windows graphical window | **L** | Enters `log`. |
-| Windows terminal interface | **Enter** | Calculates and saves the entry. |
-| Windows terminal interface | **Esc** | Clears the entry field. |
-| Windows terminal interface | **Ctrl+Q** | Quits. |
-| iOS with a hardware keyboard | **Return** | Evaluates the expression. |
-| iOS with a hardware keyboard | **Esc** | Clears the expression. |
-| iOS with a hardware keyboard | **Delete** | Deletes the last character. |
-| iOS with a hardware keyboard | **0**–**9**, **.**, **+**, **-**, **\***, **/**, **^**, **(**, **)** | Enters that key. |
-| iOS with a hardware keyboard | **L** | Enters `log`. |
+The Windows graphical window and iOS with a hardware keyboard share these
+keys:
 
-The **±** key has no keyboard shortcut. Fin Calc for Android has no keyboard
-shortcuts.
+| Key | What it does |
+| --- | --- |
+| **0**–**9**, **.**, **+**, **-**, **\***, **/**, **^**, **(**, **)** | Enters that key. |
+| **L** | Enters `log`. |
+| **Enter** or **Return** (Windows), **Return** (iOS) | Evaluates the expression. |
+| **Esc** | Clears the expression. |
+| **Backspace** (Windows), **Delete** (iOS) | Deletes the last character. |
+
+In the Windows terminal interface, **Enter** calculates and saves the entry,
+**Esc** clears the entry field, and **Ctrl+Q** quits. The **±** key has no
+keyboard shortcut. Fin Calc for Android has no keyboard shortcuts.
 
 <!-- Verified from: platform/windows/fin_calc/ui/gui/views/root_window.py [RootWindow.keyPressEvent] -->
 <!-- Verified from: platform/windows/fin_calc/ui/gui/views/keypad.py [KEY_MAP] -->
@@ -982,6 +862,23 @@ Fin Calc saves your history and settings automatically. Each platform keeps
 its own files, and the location cannot be changed.
 
 ### Find Your Data Files
+
+| Platform | Where history and settings are saved | Edit by hand |
+| --- | --- | --- |
+| Windows | `data/history.json` and `data/settings.json` in the data folder below | Yes; see [Edit the Windows Data Files](#edit-the-windows-data-files) |
+| iOS | `history.json` and `settings.json` in a `FinCalc` folder in the app's private storage, not shown in the Files app | No |
+| Android | One private file, `calculator.json` | No |
+
+On iOS and Android, use [Export History to CSV](#export-history-to-csv) to keep
+a copy of your history. On Android, uninstalling the app or clearing its data
+removes your history and settings, and Android backup and device transfer are
+turned off for this app.
+
+<!-- Verified from: platform/ios/FinCalc/Config/PathHandler.swift [PathHandler] -->
+<!-- Verified from: platform/ios/FinCalc.xcodeproj/project.pbxproj -->
+<!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/application/CalculatorModel.kt [CalculatorModel.init] -->
+<!-- Verified from: platform/android/app/src/main/AndroidManifest.xml [android:allowBackup] -->
+<!-- Verified from: platform/android/app/src/main/res/xml/data_extraction_rules.xml -->
 
 #### Data Files on Windows
 
@@ -1010,27 +907,6 @@ files.
 <!-- Verified from: platform/windows/fin_calc/config/path_handler.py [ROOT_DIR, DATA_DIR, HISTORY_FILE, SETTINGS_FILE, EXPORTS_DIR, LOGS_DIR, USER_DATA_DIR] -->
 <!-- Verified from: platform/windows/fin_calc/config/storage.py [select_storage] -->
 <!-- Verified from: platform/windows/fin_calc/application/session.py [load_session] -->
-
-#### Data Files on iOS
-
-History and settings are saved as `history.json` and `settings.json` in a
-`FinCalc` folder inside the app's private storage. The app does not show these
-files in the Files app, so they cannot be edited by hand. Use
-[Export on iOS](#export-on-ios) to keep a copy of your history.
-
-<!-- Verified from: platform/ios/FinCalc/Config/PathHandler.swift [PathHandler] -->
-<!-- Verified from: platform/ios/FinCalc.xcodeproj/project.pbxproj -->
-
-#### Data Files on Android
-
-History and settings are saved together in one private file, `calculator.json`.
-It cannot be edited by hand. Uninstalling the app or clearing its data removes
-your history and settings. Android backup and device transfer are turned off
-for this app, so export anything you want to keep first.
-
-<!-- Verified from: platform/android/app/src/main/java/com/plaintxtoffice/fincalc/application/CalculatorModel.kt [CalculatorModel.init] -->
-<!-- Verified from: platform/android/app/src/main/AndroidManifest.xml [android:allowBackup] -->
-<!-- Verified from: platform/android/app/src/main/res/xml/data_extraction_rules.xml -->
 
 ### Edit the Windows Data Files
 
@@ -1176,11 +1052,15 @@ No. Export your history first if you might need it.
 
 ### Can I change settings from the Windows terminal interface or command line?
 
-No. Use **Edit** > **Settings...** in the graphical window, or edit
-`settings.json` while Fin Calc is closed. The terminal interface and command
-line use the new settings the next time they start.
+From the `fin-calc>` prompt, yes: use `config`, as described in
+[Use the Persistent Prompt](#use-the-persistent-prompt). The terminal
+interface and one-shot commands cannot change settings; use **Edit** >
+**Settings...** in the graphical window, or edit `settings.json` while Fin
+Calc is closed. The terminal interface and command line use the new settings
+the next time they start.
 
 <!-- Verified from: platform/windows/fin_calc/application/session.py [load_session] -->
+<!-- Verified from: platform/windows/fin_calc/ui/cli/repl.py [run_repl] -->
 
 ### Why does the same logarithm differ in its last digit on another platform?
 

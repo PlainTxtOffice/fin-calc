@@ -85,7 +85,19 @@ jobs:
         timeout-minutes: 15
         run: |
           xcrun simctl list runtimes
-          xcodebuild -downloadPlatform iOS -buildVersion 26.4.1 -architectureVariant arm64
+          if xcrun simctl list runtimes --json | python3 -c '
+          import json, sys
+          runtimes = json.load(sys.stdin)["runtimes"]
+          sys.exit(0 if any(
+              runtime["identifier"].startswith("com.apple.CoreSimulator.SimRuntime.iOS-")
+              and runtime.get("version") == "26.4.1"
+              and runtime.get("isAvailable") is True
+              for runtime in runtimes) else 1)
+          '; then
+            echo "iOS 26.4.1 runtime is already installed"
+          else
+            xcodebuild -downloadPlatform iOS -buildVersion 26.4.1 -architectureVariant arm64
+          fi
           xcrun simctl list runtimes --json > "$RUNNER_TEMP/ios-runtimes.json"
           cat "$RUNNER_TEMP/ios-runtimes.json"
       - name: Create and boot an iPhone simulator
