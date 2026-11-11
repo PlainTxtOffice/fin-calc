@@ -56,13 +56,25 @@ sessions; they do not sync across devices.
 
 ### Windows GUI
 
-![Fin Calc Windows graphical calculator with a saved calculation tape and numeric keypad](platform/windows/assets/screenshots/windows-calculator.png)
+<!-- rumdl-disable MD033 -->
+<a href="platform/windows/assets/screenshots/windows-calculator.png">
+  <img src="platform/windows/assets/screenshots/windows-calculator.png"
+       alt="Fin Calc for Windows, showing saved calculations and a numeric keypad"
+       width="440">
+</a>
+<!-- rumdl-enable MD033 -->
 
 Windows graphical app; the download below is for Android.
 
 ### Android
 
-![Fin Calc Android calculator in the light theme with decimal calculations in its saved tape](platform/android/assets/screenshots/android-calculator.png)
+<!-- rumdl-disable MD033 -->
+<a href="platform/android/assets/screenshots/android-calculator.png">
+  <img src="platform/android/assets/screenshots/android-calculator.png"
+       alt="Fin Calc for Android in the light theme, showing saved calculations"
+       width="280">
+</a>
+<!-- rumdl-enable MD033 -->
 
 Calculator view from an earlier Android release.
 
