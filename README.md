@@ -1,4 +1,4 @@
-<!-- last_updated: 2026-11-11 -->
+<!-- last_updated: 2026-11-13 -->
 <!-- Authoring guidance: dev-docs/specs/README_SPEC.instructions.md -->
 <!-- rumdl-disable MD033 MD041 -->
 <p align="center">
@@ -93,6 +93,13 @@ iOS release download is not yet provided here.
 
 See the [User Manual](docs/USER_MANUAL.md) for installation, setup, usage, and
 troubleshooting.
+
+## Feedback
+
+Bug reports and feature requests are welcome. In the Android app, choose
+**Send Feedback** in the **⋮** menu; in the iOS app, choose it in the **More**
+menu. On any platform, you can also use the
+[contact form](https://plaintxtoffice.com/contact/) on plaintxtoffice.com.
 
 ## License
 

@@ -1,9 +1,9 @@
 ---
-last_updated: 2026-11-11
-version: 5.6.2
+last_updated: 2026-11-13
+version: 5.7.0
 product_versions:
   windows: "0.1.0"
-  ios: "0.1.0"
+  ios: "0.2.0"
   android: "0.3.1"
 generated_from: "dev-docs/specs/USER_MANUAL_SPEC.instructions.md"
 ---
@@ -23,9 +23,10 @@ record of their calculations, such as when checking figures or totals.
 
 **Product goal: Your DCF model. In your pocket.** This is the intended
 experience for the Android **premium subscription feature** using free cash flow
-to the firm (FCFF). The current implementation is an initial two-stage
-calculator. See [Premium FCFF valuation](#premium-fcff-valuation-android) for
-the methodology reference and how to use it.
+to the firm (FCFF). The current implementation is an initial calculator with a
+high-growth period, optional fade years, and terminal growth. See
+[Premium FCFF valuation](#premium-fcff-valuation-android) for the methodology
+reference and how to use it.
 
 <!-- Verified from: platform/windows/pyproject.toml [project.description] -->
 <!-- Verified from: platform/windows/fin_calc/domains/calc/evaluator.py [evaluate] -->
@@ -37,7 +38,7 @@ settings; nothing is synchronized between them.
 | Platform | Interfaces | Version |
 | --- | --- | --- |
 | Windows | Graphical window, terminal interface, and command line | 0.1.0 |
-| iOS (iPhone and iPad) | Touch app | 0.1.0 |
+| iOS (iPhone and iPad) | Touch app | 0.2.0 |
 | Android | Touch app | 0.3.1 |
 
 <!-- Verified from: platform/windows/fin_calc/ui/cli/app.py [select_interface] -->
@@ -72,7 +73,8 @@ installs them for you.
 #### Install on Windows
 
 Fin Calc for Windows runs from its project folder inside a Python virtual
-environment. Where to download the project folder is Unknown.
+environment. The Windows version has not been released yet, so no download of
+the project folder is provided.
 
 1. Install Python 3.12 or newer.
 1. Open PowerShell in the project's `platform/windows/` folder.
@@ -107,8 +109,8 @@ Install with `--editable` as shown so that your saved data stays in the
 
 A packaged Windows program also exists. It opens the graphical window when
 started without options and stores its data in a different folder; see
-[Data Files on Windows](#data-files-on-windows). Where to obtain a packaged
-copy is Unknown.
+[Data Files on Windows](#data-files-on-windows). The packaged program has not
+been released yet.
 
 <!-- Verified from: platform/windows/main.py -->
 <!-- Verified from: platform/windows/fin_calc/config/path_handler.py [IS_COMPILED, USER_DATA_DIR] -->
@@ -117,12 +119,13 @@ copy is Unknown.
 
 On Android, install Fin Calc from
 [Google Play](https://play.google.com/store/apps/details?id=com.plaintxtoffice.fincalc).
-It requires Android 8.0 or later. The free Android build requests no network or
-storage permissions. Premium-enabled builds use Google Play Billing, which adds
-billing and network permissions. The basic calculator does not require a
-subscription.
+It requires Android 8.0 or later. The Google Play version includes the Google
+Play Billing library for the optional Premium DCF subscription, which gives the
+app billing and internet permissions. It requests no storage permissions. An
+Android build without Premium requests no network or storage permissions. The
+basic calculator does not require a subscription.
 
-Where to obtain the iOS app is Unknown. No App Store or TestFlight release is
+The iOS app has not been released yet. No App Store or TestFlight release is
 available.
 
 The app appears as **Fin Calc** on the Home Screen or in the app launcher. Its
@@ -253,8 +256,8 @@ the status line shows
 The touch apps and the Windows graphical window share the same layout:
 
 - **Tape**: the list of saved calculations, each shown as
-  `expression = result`, newest at the bottom. Android shows the expression
-  on one line and `= result` on the next, aligned to the right.
+  `expression = result`, newest at the bottom. iOS and Android show the
+  expression on one line and `= result` on the next, aligned to the right.
 - **Display**: the expression you are entering, or the result after you
   evaluate. A status line under it shows errors.
 - **Keypad**: number, operator, and action keys.
@@ -276,8 +279,8 @@ The keypad has these keys on every platform:
 | **←** (Windows) or **⌫** (iOS, Android) | Delete the last character. |
 | **=** | Evaluate the expression and save it to the tape. |
 
-The iOS and Android keys, display, and tape show **×** for multiply and **÷**
-for divide. Android also shows **−** for subtract and for negative numbers.
+The iOS and Android keys, display, and tape show **×** for multiply, **÷**
+for divide, and **−** for subtract and for negative numbers.
 Saved history and CSV exports keep `*`, `/`, and `-`.
 
 <!-- Verified from: platform/windows/fin_calc/ui/gui/views/keypad.py [BUTTON_LAYOUT] -->
@@ -293,7 +296,7 @@ layout details:
 | Platform | Menus | Layout and feedback |
 | --- | --- | --- |
 | Windows graphical window | A menu bar with **File**, **Edit**, and **Help**. | Errors appear in red under the expression. Export and settings messages appear in the status bar at the bottom. You can type on the keyboard instead of clicking keys. |
-| iOS | A **History** menu (clock icon) on the left of the top bar and a **Settings** button (gear icon) on the right. | The keypad fills the lower half of the screen. iPhone stays in portrait; iPad turns with the device. Errors also give haptic feedback. |
+| iOS | A **History** menu (clock icon) on the left of the top bar and a **More** menu (ellipsis icon) on the right. | In portrait, the keypad fills the lower half of the screen. In landscape, the tape moves to the left and the display and keypad to the right. Keys and errors give haptic feedback. If iOS closes the app in the background, the expression you were entering returns when you reopen it. |
 | Android | A **⋮** button on the right of the top bar. | In landscape, the tape moves to the left and the display and keypad to the right. |
 
 <!-- Verified from: platform/windows/fin_calc/ui/gui/menus/menu_bar.py [build_menu_bar] -->
@@ -331,8 +334,8 @@ see its help.
 | --- | --- |
 | Windows graphical window | **Help** > **Keyboard Shortcuts** lists keyboard keys. **Help** > **About** shows the version. |
 | Windows command line | Add `--help`, as in `.venv/Scripts/python.exe -m fin_calc.main calculate --help`. |
-| iOS | **Settings** > **About** shows the version. |
-| Android | **⋮** > **About** shows the version and short tips. **⋮** > **Send Feedback** drafts an email for bug reports and feature requests. **⋮** > **Privacy Policy** opens the privacy policy. |
+| iOS | **More** > **Settings** > **About** shows the version and short tips. **More** > **Send Feedback** offers an email draft or the website contact form for bug reports and feature requests. **More** > **Privacy Policy** opens the privacy policy. |
+| Android | **⋮** > **About** shows the version and short tips. **⋮** > **Send Feedback** offers an email draft or the website contact form for bug reports and feature requests. **⋮** > **Privacy Policy** opens the privacy policy. |
 
 <!-- Verified from: platform/windows/fin_calc/ui/gui/dialogs/help_dialogs.py [show_about, show_shortcuts] -->
 <!-- Verified from: platform/windows/fin_calc/ui/cli/commands.py [calculate] -->
@@ -403,8 +406,8 @@ In the Windows graphical window and the iOS and Android apps:
    on iOS.
 
 The display shows the result, and the calculation is added to the tape. On
-iOS and Android, you can select and copy the display text. On Android, the
-keypad stops accepting keys when the expression reaches 128 symbols or 2,048
+iOS and Android, you can select and copy the display text. On iOS and Android,
+the keypad stops accepting keys when the expression reaches 128 symbols or 2,048
 characters.
 
 <!-- Verified from: platform/windows/fin_calc/ui/gui/views/keypad.py [KEY_MAP] -->
@@ -748,10 +751,11 @@ The current DCF calculator is an initial
 **premium subscription feature for Android**. It uses the standard
 [FCFF valuation methodology described by Aswath Damodaran at NYU Stern](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/lectures/fcff.html).
 The methodology reference is public; Fin Calc's premium implementation is
-proprietary. The feature is not included in the free public build or the Windows
-and iOS apps.
+proprietary. The Google Play version of the Android app includes the feature as
+an optional subscription. It is not included in an Android build without Premium
+or in the Windows and iOS apps.
 
-In a premium-enabled Android build, open **⋮ > Premium DCF**. Subscribe through
+In the Google Play version, open **⋮ > Premium DCF**. Subscribe through
 Google Play, or use **Restore** for an existing purchase. **Manage** opens
 Google Play to manage or cancel it. **How it works** explains the model. Choose
 a monthly or yearly plan with its own Subscribe button; each button shows the
@@ -873,19 +877,22 @@ have the command.
 | --- | --- | --- | --- |
 | Save history to a CSV file | **File** > **Export History...** | **History** > **Export CSV** | **⋮** > **Export History** |
 | Remove all saved history after confirmation | **File** > **Clear History**, or right-click the tape | **History** > **Clear History** | **⋮** > **Clear History** |
-| Open the settings | **Edit** > **Settings...** | **Settings** button | **⋮** > **Settings** |
-| Show the version | **Help** > **About** | **Settings** > **About** | **⋮** > **About**, which also shows short tips |
+| Open the settings | **Edit** > **Settings...** | **More** > **Settings** | **⋮** > **Settings** |
+| Show the version | **Help** > **About** | **More** > **Settings** > **About**, which also shows short tips | **⋮** > **About**, which also shows short tips |
 | List keyboard keys | **Help** > **Keyboard Shortcuts** | — | — |
-| Send a bug report or feature request | — | — | **⋮** > **Send Feedback** |
-| Open the privacy policy | — | — | **⋮** > **Privacy Policy** |
+| Send a bug report or feature request | — | **More** > **Send Feedback** | **⋮** > **Send Feedback** |
+| Open the privacy policy | — | **More** > **Privacy Policy** | **⋮** > **Privacy Policy** |
 | Place a tape result in the expression | Click the line | Tap the line, or touch and hold it and choose **Use Result** | Tap the line |
 | Copy a full-precision tape result | — | Touch and hold the line and choose **Copy Result** | — |
 | Close the program | **File** > **Exit** | — | — |
 
-**Send Feedback** opens your email app with a message to
+**Send Feedback** asks how you want to send a bug report or feature request.
+**Email** opens your email app with a message to
 `support@plaintxtoffice.com` whose subject names the app version, or shows the
 address if no email app is available. The message ends with the app version,
-Android version, and device model, which you can delete before sending.
+iOS or Android version, and device model, which you can delete before sending.
+**Contact form** opens `https://plaintxtoffice.com/contact/` in a browser, or
+shows the address if no browser is available.
 **Privacy Policy** opens `https://plaintxtoffice.com/privacy-policy/` in a
 browser, or shows the address if no browser is available. On Windows, press
 **Alt+F**, **Alt+E**, or **Alt+H** to open the **File**, **Edit**, or **Help**
